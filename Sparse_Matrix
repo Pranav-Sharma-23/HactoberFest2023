@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+  int row;
+  int col;
+  int value;
+  struct node *next;
+} Node;
+
+typedef struct sparse_matrix {
+  int rows;
+  int cols;
+  Node *head;
+} SparseMatrix;
+
+SparseMatrix *create_sparse_matrix(int rows, int cols) {
+  SparseMatrix *matrix = malloc(sizeof(SparseMatrix));
+  matrix->rows = rows;
+  matrix->cols = cols;
+  matrix->head = NULL;
+  return matrix;
+}
+
+void insert_into_sparse_matrix(SparseMatrix *matrix, int row, int col, int value) {
+  Node *new_node = malloc(sizeof(Node));
+  new_node->row = row;
+  new_node->col = col;
+  new_node->value = value;
+
+  // Add the new node to the beginning of the linked list
+  new_node->next = matrix->head;
+  matrix->head = new_node;
+}
+
+void print_sparse_matrix(SparseMatrix *matrix) {
+  Node *current_node = matrix->head;
+  while (current_node != NULL) {
+    printf("(%d, %d) = %d\n", current_node->row, current_node->col, current_node->value);
+    current_node = current_node->next;
+  }
+}
+
+int main() {
+  SparseMatrix *matrix = create_sparse_matrix(3, 3);
+
+  // Insert some non-zero elements into the matrix
+  insert_into_sparse_matrix(matrix, 0, 0, 1);
+  insert_into_sparse_matrix(matrix, 1, 1, 2);
+  insert_into_sparse_matrix(matrix, 2, 2, 3);
+
+  // Print the sparse matrix
+  print_sparse_matrix(matrix);
+
+  return 0;
+}
